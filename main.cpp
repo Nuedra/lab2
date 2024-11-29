@@ -2,40 +2,9 @@
 #include "SmrtPtr.hpp"
 #include "data_structures/ArraySequence.h"
 #include "QuickSorter.hpp"
+#include "compare.hpp"
+#include "Person.hpp"
 
-struct Person {
-    std::string first_name;
-    std::string last_name;
-    int birth_year{};
-    float height{};
-    float weight{};
-
-    std::string city;
-    std::string phone;
-    int salary{};
-};
-
-template<typename T, typename Key>
-int CompareByKey(const T& a, const T& b, Key T::*key) {
-    if (a.*key < b.*key) {
-        return -1;
-    }
-    if (a.*key > b.*key) {
-        return 1;
-    }
-    return 0;
-}
-
-template<typename T>
-int CompareDefault(const T& a, const T& b) {
-    if (a < b) {
-        return -1;
-    }
-    if (a > b) {
-        return 1;
-    }
-    return 0;
-}
 
 
 int main() {
@@ -47,9 +16,8 @@ int main() {
     SmrtPtr<ArraySequence<Person>> seq(seq_empty);
     QuickSorter<Person> quick_sorter;
 
-    // Сортировка по зарплате
     quick_sorter.Sort(seq, [](const Person& a, const Person& b) {
-       return CompareByKey(a, b, &Person::salary);
+        return compare_by_key(a, b, &Person::first_name);
     });
 
     std::cout << "Sorted by salary:" << std::endl;

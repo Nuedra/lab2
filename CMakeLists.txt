@@ -6,4 +6,6 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(lab2 main.cpp
         SmrtPtr.hpp
         Isorter.hpp
-        QuickSorter.hpp)
+        QuickSorter.hpp
+        compare.hpp
+        Person.hpp)

@@ -3,7 +3,8 @@
 
 #include "ISorter.hpp"
 #include "data_structures/ArraySequence.h"
-#include "SmrtPtr.hpp" /
+#include "SmrtPtr.hpp"
+#include "compare.hpp"
 
 template<typename T>
 class QuickSorter : public ISorter<T> {
@@ -37,7 +38,7 @@ private:
     }
 
 public:
-    SmrtPtr<ArraySequence<T>> Sort(SmrtPtr<ArraySequence<T>> seq, int (*cmp)(const T&, const T&)) {
+    SmrtPtr<ArraySequence<T>> Sort(SmrtPtr<ArraySequence<T>> seq, int (*cmp)(const T&, const T&) = compare_default<T>) {
         QuickSort(seq, 0, seq->get_length() - 1, cmp);
         return seq;
     }

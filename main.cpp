@@ -6,13 +6,13 @@
 struct Person {
     std::string first_name;
     std::string last_name;
-    int birth_year;
-    float height;
-    float weight;
+    int birth_year{};
+    float height{};
+    float weight{};
 
     std::string city;
     std::string phone;
-    int salary;
+    int salary{};
 };
 
 template<typename T, typename Key>
@@ -38,7 +38,6 @@ int CompareDefault(const T& a, const T& b) {
 }
 
 
-
 int main() {
     ArraySequence<Person> seq;
     seq.append({"Alice", "Smith", 1995, 170.2, 65.0, "New York", "123-456-7890", 50000});
@@ -48,12 +47,13 @@ int main() {
     QuickSorter<Person> quick_sorter;
 
     // Сортировка по зарплате
-    auto sorted_by_salary = quick_sorter.Sort(&seq);
+    quick_sorter.Sort(&seq, [](const Person& a, const Person& b) {
+       return CompareByKey(a, b, &Person::salary);
+    });
 
     std::cout << "Sorted by salary:" << std::endl;
-    for (int i = 0; i < sorted_by_salary->GetLength(); ++i) {
-        const Person& p = sorted_by_salary->Get(i);
-        std::cout << p.first_name << " " << p.last_name << " - Salary: " << p.salary << std::endl;
+    for (int i = 0; i < seq.get_length(); ++i) {
+        std::cout << seq.get(i).first_name << " (" << seq.get(i).salary << ")" << std::endl;
     }
 
     return 0;

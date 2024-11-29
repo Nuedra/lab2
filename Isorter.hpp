@@ -9,7 +9,7 @@ class ISorter {
 public:
     virtual ~ISorter() = default;
 
-    virtual ArraySequence<T>* Sort(ArraySequence<T>* seq,
+    virtual SmrtPtr<ArraySequence<T>> Sort(SmrtPtr<ArraySequence<T>> seq,
                                    int (*cmp)(const T&, const T&)) = 0;
 };
 

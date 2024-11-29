@@ -3,11 +3,12 @@
 
 #include "ISorter.hpp"
 #include "data_structures/ArraySequence.h"
+#include "SmrtPtr.hpp" /
 
 template<typename T>
 class QuickSorter : public ISorter<T> {
 private:
-    void QuickSort(ArraySequence<T>* seq, int left, int right, int (*cmp)(const T&, const T&)) {
+    void QuickSort(SmrtPtr<ArraySequence<T>> seq, int left, int right, int (*cmp)(const T&, const T&)) {
         if (left >= right) return;
 
         int pivot_index = Partition(seq, left, right, cmp);
@@ -15,7 +16,7 @@ private:
         QuickSort(seq, pivot_index + 1, right, cmp);
     }
 
-    int Partition(ArraySequence<T>* seq, int left, int right, int (*cmp)(const T&, const T&)) {
+    int Partition(SmrtPtr<ArraySequence<T>> seq, int left, int right, int (*cmp)(const T&, const T&)) {
         T pivot = seq->get(right);
         int i = left - 1;
 
@@ -36,7 +37,7 @@ private:
     }
 
 public:
-    ArraySequence<T>* Sort(ArraySequence<T>* seq, int (*cmp)(const T&, const T&)) {
+    SmrtPtr<ArraySequence<T>> Sort(SmrtPtr<ArraySequence<T>> seq, int (*cmp)(const T&, const T&)) {
         QuickSort(seq, 0, seq->get_length() - 1, cmp);
         return seq;
     }

@@ -8,4 +8,7 @@ add_executable(lab2 main.cpp
         Isorter.hpp
         QuickSorter.hpp
         compare.hpp
-        Person.hpp)
+        Person.hpp
+        tests.cpp
+        BubbleSorter.hpp
+        InsertionSorter.hpp)

@@ -1,5 +1,5 @@
-#ifndef LAB2_QUICKSORTER_HPP
-#define LAB2_QUICKSORTER_HPP
+#ifndef QUICKSORTER_HPP
+#define QUICKSORTER_HPP
 
 #include "ISorter.hpp"
 #include "data_structures/ArraySequence.h"
@@ -8,6 +8,12 @@
 
 template<typename T>
 class QuickSorter : public ISorter<T> {
+public:
+    SmrtPtr<ArraySequence<T>> Sort(SmrtPtr<ArraySequence<T>> seq, int (*cmp)(const T&, const T&) = compare_default<T>) override {
+        QuickSort(seq, 0, seq->get_length() - 1, cmp);
+        return seq;
+    }
+
 private:
     void QuickSort(SmrtPtr<ArraySequence<T>> seq, int left, int right, int (*cmp)(const T&, const T&)) {
         if (left >= right) return;
@@ -37,11 +43,7 @@ private:
         return i + 1;
     }
 
-public:
-    SmrtPtr<ArraySequence<T>> Sort(SmrtPtr<ArraySequence<T>> seq, int (*cmp)(const T&, const T&) = compare_default<T>) {
-        QuickSort(seq, 0, seq->get_length() - 1, cmp);
-        return seq;
-    }
+
 };
 
-#endif //LAB2_QUICKSORTER_HPP
+#endif //QUICKSORTER_HPP

@@ -1,10 +1,11 @@
 #include <iostream>
+#include "BubbleSorter.hpp"
 #include "SmrtPtr.hpp"
 #include "data_structures/ArraySequence.h"
 #include "QuickSorter.hpp"
 #include "compare.hpp"
+#include "InsertionSorter.hpp"
 #include "Person.hpp"
-
 
 
 int main() {
@@ -15,9 +16,12 @@ int main() {
 
     SmrtPtr<ArraySequence<Person>> seq(seq_empty);
     QuickSorter<Person> quick_sorter;
+    BubbleSorter<Person> bubble_sorter;
+    InsertionSorter<Person> insertion_sorter;
 
-    quick_sorter.Sort(seq, [](const Person& a, const Person& b) {
-        return compare_by_key(a, b, &Person::first_name);
+
+    insertion_sorter.Sort(seq, [](const Person& a, const Person& b) {
+        return compare_by_key(a, b, &Person::salary);
     });
 
     std::cout << "Sorted by salary:" << std::endl;

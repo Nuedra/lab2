@@ -2,9 +2,10 @@
 #define LAB1_SMRT_PTR_HPP
 
 #include <stdexcept>
+#include <typeinfo>
 
 template <typename T>
-class smrt_ptr {
+class SmrtPtr {
 private:
     T* ptr;                  // Указатель на управляемый объект
     size_t* ref_count;       // Указатель на счетчик ссылок
@@ -17,24 +18,24 @@ private:
     }
 
 public:
-    explicit smrt_ptr(T *p = nullptr) : ptr(p), ref_count(new size_t(1)) {}
+    explicit SmrtPtr(T *p = nullptr) : ptr(p), ref_count(new size_t(1)) {}
 
-    smrt_ptr(const smrt_ptr<T> &other) : ptr(other.ptr), ref_count(other.ref_count) {
+    SmrtPtr(const SmrtPtr<T> &other) : ptr(other.ptr), ref_count(other.ref_count) {
         ++(*ref_count);
     }
 
     // Шаблонный конструктор копирования для совместимых типов
     template <typename U>
-    smrt_ptr(const smrt_ptr<U>& other) : ptr(static_cast<T*>(other.ptr)), ref_count(other.ref_count) {
+    SmrtPtr(const SmrtPtr<U>& other) : ptr(static_cast<T*>(other.ptr)), ref_count(other.ref_count) {
         ++(*ref_count);
     }
 
     // Деструктор
-    ~smrt_ptr() {
+    ~SmrtPtr() {
         release();
     }
 
-    smrt_ptr<T>& operator=(const smrt_ptr<T> &other) {
+    SmrtPtr<T>& operator=(const SmrtPtr<T> &other) {
         if (this != &other) {
             release();
             ptr = other.ptr;
@@ -47,8 +48,8 @@ public:
 
     // Шаблонный оператор присваивания для совместимых типов
     template <typename U>
-    smrt_ptr<T>& operator=(const smrt_ptr<U>& other) {
-        if (this != static_cast<const smrt_ptr<T>*>(&other)) {
+    SmrtPtr<T>& operator=(const SmrtPtr<U>& other) {
+        if (this != static_cast<const SmrtPtr<T>*>(&other)) {
             release();
             ptr = static_cast<T*>(other.ptr);
             ref_count = other.ref_count;
@@ -79,12 +80,12 @@ public:
 
 
     template <typename U>
-    friend class smrt_ptr;
+    friend class SmrtPtr;
 };
 
 
 template <typename T>
-class smrt_ptr<T[]> {
+class SmrtPtr<T[]> {
 private:
     T* ptr;
     size_t* ref_count;
@@ -97,14 +98,14 @@ private:
     }
 
 public:
-    explicit smrt_ptr(T *p = nullptr) : ptr(p), ref_count(new size_t(1)) {}
+    explicit SmrtPtr(T *p = nullptr) : ptr(p), ref_count(new size_t(1)) {}
 
-    smrt_ptr(const smrt_ptr<T[]> &other) : ptr(other.ptr), ref_count(other.ref_count) {
+    SmrtPtr(const SmrtPtr<T[]> &other) : ptr(other.ptr), ref_count(other.ref_count) {
         ++(*ref_count);
     }
 
     template <typename U>
-    smrt_ptr(const smrt_ptr<U[]>& other) : ptr(dynamic_cast<T*>(other.ptr)), ref_count(other.ref_count) {
+    SmrtPtr(const SmrtPtr<U[]>& other) : ptr(dynamic_cast<T*>(other.ptr)), ref_count(other.ref_count) {
         if (!ptr) {
             throw std::bad_cast();
         }
@@ -112,11 +113,11 @@ public:
         ++(*ref_count);
     }
 
-    ~smrt_ptr() {
+    ~SmrtPtr() {
         release();
     }
 
-    smrt_ptr<T[]>& operator=(const smrt_ptr<T[]> &other) {
+    SmrtPtr<T[]>& operator=(const SmrtPtr<T[]> &other) {
         if (this != &other) {
             release();
             ptr = other.ptr;
@@ -129,7 +130,7 @@ public:
 
     // Шаблонный оператор присваивания для подтипов
     template <typename U>
-    smrt_ptr<T[]>& operator=(const smrt_ptr<U[]>& other) {
+    SmrtPtr<T[]>& operator=(const SmrtPtr<U[]>& other) {
         T* temp_ptr = dynamic_cast<T*>(other.ptr);  // Проверка приведения типа
 
         if (!temp_ptr) {
@@ -165,7 +166,7 @@ public:
     }
 
     template <typename U>
-    friend class smrt_ptr;
+    friend class SmrtPtr;
 };
 
 #endif //LAB1_SMRT_PTR_HPP

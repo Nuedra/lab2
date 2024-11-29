@@ -27,7 +27,7 @@ public:
     T get(int index) const override;
     sequence<T>* get_subsequence(int start_index, int end_index) const override;
     int get_length() const override;
-    void append(const T& item) override;
+    void append(const T& item);
     void prepend(const T& item) override;
     void insert_at(const T& item, int index) override;
     void set(int index, const T& item) override;

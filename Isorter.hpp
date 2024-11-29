@@ -9,8 +9,8 @@ class ISorter {
 public:
     virtual ~ISorter() = default;
 
-    virtual SmrtPtr<ArraySequence<T>> Sort(SmrtPtr<ArraySequence<T>> seq,
-      int (*cmp)(const T&, const T&) = CompareDefault<T>) = 0;
+    virtual ArraySequence<T>* Sort(ArraySequence<T>* seq,
+                                   int (*cmp)(const T&, const T&)) = 0;
 };
 
 #endif // ISORTER_H

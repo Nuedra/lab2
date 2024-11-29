@@ -9,8 +9,6 @@ struct Person {
     int birth_year{};
     float height{};
     float weight{};
-    std::string city;
-    std::string phone;
     int salary{};
 };
 

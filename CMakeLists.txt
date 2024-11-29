@@ -11,4 +11,7 @@ add_executable(lab2 main.cpp
         Person.hpp
         tests.cpp
         BubbleSorter.hpp
-        InsertionSorter.hpp)
+        InsertionSorter.hpp
+        HeapSorter.hpp
+        create_random.cpp
+        create_random.hpp)

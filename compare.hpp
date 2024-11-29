@@ -1,5 +1,5 @@
-#ifndef LAB2_COMPARE_HPP
-#define LAB2_COMPARE_HPP
+#ifndef COMPARE_HPP
+#define COMPARE_HPP
 
 template<typename T>
 int compare_default(const T& a, const T& b) {
@@ -24,4 +24,4 @@ int compare_by_key(const T& a, const T& b, Key T::*key) {
 }
 
 
-#endif LAB2_COMPARE_HPP
+#endif COMPARE_HPP

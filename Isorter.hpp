@@ -1,15 +1,16 @@
-#ifndef LAB2_ISORTER_HPP
-#define LAB2_ISORTER_HPP
+#ifndef ISORTER_H
+#define ISORTER_H
 
 #include "data_structures/ArraySequence.h"
+#include "SmrtPtr.hpp"
 
 template<typename T>
 class ISorter {
 public:
     virtual ~ISorter() = default;
 
-    // Чистый виртуальный метод сортировки
-    virtual ArraySequence<T>* Sort(ArraySequence<T>* seq, int (*cmp)(const T&, const T&)) = 0;
+    virtual SmrtPtr<ArraySequence<T>> Sort(SmrtPtr<ArraySequence<T>> seq,
+      int (*cmp)(const T&, const T&) = CompareDefault<T>) = 0;
 };
 
-#endif //LAB2_ISORTER_HPP
+#endif // ISORTER_H

@@ -8,15 +8,12 @@
 #include <string>
 #include "person.hpp"
 
-// Универсальная функция тестирования для int
 template<typename Sorter>
 void run_tests_for_int(Sorter& sorter) {
-    // Test 1: Empty array
     auto empty = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
     sorter.Sort(empty, compare_default<int>);
     assert(empty->get_length() == 0);
 
-    // Test 2: Already sorted array
     auto sorted = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
     sorted->append(1);
     sorted->append(2);
@@ -28,7 +25,6 @@ void run_tests_for_int(Sorter& sorter) {
         assert(sorted->get(i) == (i + 1));
     }
 
-    // Test 3: Reverse sorted array
     auto reverse_sorted = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
     reverse_sorted->append(5);
     reverse_sorted->append(4);
@@ -40,7 +36,6 @@ void run_tests_for_int(Sorter& sorter) {
         assert(reverse_sorted->get(i) == (i + 1));
     }
 
-    // Test 4: Array with duplicates
     auto duplicates = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
     duplicates->append(4);
     duplicates->append(2);
@@ -62,25 +57,47 @@ void run_tests_for_int(Sorter& sorter) {
         assert(duplicates->get(i) == expected_duplicates->get(i));
     }
 
-    // Test 5: Single element array
     auto single = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
     single->append(42);
     sorter.Sort(single, compare_default<int>);
     assert(single->get_length() == 1);
     assert(single->get(0) == 42);
+
+    auto empty_array = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
+    sorter.Sort(empty_array, compare_default<int>);
+    assert(empty_array->get_length() == 0);
+
+    auto single_element = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
+    single_element->append(5);
+    sorter.Sort(single_element, compare_default<int>);
+    assert(single_element->get_length() == 1);
+    assert(single_element->get(0) == 5);
+
+    auto two_sorted = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
+    two_sorted->append(3);
+    two_sorted->append(4);
+    sorter.Sort(two_sorted, compare_default<int>);
+    assert(two_sorted->get_length() == 2);
+    assert(two_sorted->get(0) == 3);
+    assert(two_sorted->get(1) == 4);
+
+    auto two_reverse_sorted = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
+    two_reverse_sorted->append(4);
+    two_reverse_sorted->append(3);
+    sorter.Sort(two_reverse_sorted, compare_default<int>);
+    assert(two_reverse_sorted->get_length() == 2);
+    assert(two_reverse_sorted->get(0) == 3);
+    assert(two_reverse_sorted->get(1) == 4);
 }
 
-// Универсальная функция тестирования для person
 template<typename Sorter>
 void run_tests_for_person(Sorter& sorter) {
     ComparatorWrapper<person, int>::SetKey(&person::salary);
 
-    // Test 1: Empty array
     auto empty = SmrtPtr<ArraySequence<person>>(new ArraySequence<person>());
     sorter.Sort(empty, ComparatorWrapper<person, int>::Compare);
     assert(empty->get_length() == 0);
 
-    // Test 2: Array of Persons sorted by salary
     auto persons = SmrtPtr<ArraySequence<person>>(new ArraySequence<person>());
     persons->append({"John", "Doe", 1985, 180.0f, 75.0f, 4000});
     persons->append({"Jane", "Smith", 1990, 165.0f, 60.0f, 3000});

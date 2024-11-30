@@ -53,10 +53,8 @@ void write_csv(const std::string& filename, SmrtPtr<ArraySequence<person>> perso
         return;
     }
 
-    // Записываем заголовки
     file << "first_name,last_name,birth_year,height,weight,salary\n";
 
-    // Записываем данные
     for (int i = 0; i < persons->get_length(); ++i) {
         const auto& person = persons->get(i);
         file << person.first_name << ","
@@ -76,7 +74,6 @@ void generate_and_write_persons_to_file(int number_of_persons) {
 
     SmrtPtr<ArraySequence<person>> persons = SmrtPtr<ArraySequence<person>>(new ArraySequence<person>());
 
-    // Генерация данных
     for (int i = 0; i < number_of_persons; ++i) {
         person person;
         person.first_name = generate_random_name(first_names);
@@ -88,7 +85,6 @@ void generate_and_write_persons_to_file(int number_of_persons) {
         persons->append(person);
     }
 
-    // Используем выделенную функцию write_csv
     write_csv("../csv/test.csv", persons);
 
 }
@@ -102,14 +98,12 @@ SmrtPtr<ArraySequence<person>> read_csv(const std::string& filename) {
     }
 
     std::string line;
-    // Пропустить заголовок
     std::getline(file, line);
 
     while (std::getline(file, line)) {
         std::istringstream stream(line);
         std::string first_name, last_name, birth_year, height, weight, salary;
 
-        // Разделение строки по запятым
         std::getline(stream, first_name, ',');
         std::getline(stream, last_name, ',');
         std::getline(stream, birth_year, ',');
@@ -117,7 +111,6 @@ SmrtPtr<ArraySequence<person>> read_csv(const std::string& filename) {
         std::getline(stream, weight, ',');
         std::getline(stream, salary, ',');
 
-        // Создание объекта person
         person person;
         person.first_name = first_name;
         person.last_name = last_name;
@@ -126,7 +119,6 @@ SmrtPtr<ArraySequence<person>> read_csv(const std::string& filename) {
         person.weight = std::stof(weight);
         person.salary = std::stoi(salary);
 
-        // Добавление в последовательность
         sequence->append(person);
     }
 

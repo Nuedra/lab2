@@ -1,7 +1,8 @@
 #ifndef COMPARE_HPP
 #define COMPARE_HPP
 
-#include <vector>
+#include "data_structures/ArraySequence.h"
+#include "SmrtPtr.hpp"
 
 template<typename T>
 int compare_default(const T& a, const T& b) {
@@ -17,14 +18,12 @@ int compare_default(const T& a, const T& b) {
 template <typename T, typename KeyType>
 class ComparatorWrapper {
 public:
-    static KeyType T::*key;  // Указатель на поле для сравнения
+    static KeyType T::*key;
 
-    // Устанавливаем поле, по которому будет выполняться сравнение
     static void SetKey(KeyType T::*key_field) {
         key = key_field;
     }
 
-    // Статическая функция сравнения, совместимая с интерфейсом сортировщика
     static int Compare(const T& a, const T& b) {
         if (a.*key < b.*key) {
             return -1;
@@ -36,36 +35,35 @@ public:
     }
 };
 
-// Определение статического члена класса
 template <typename T, typename KeyType>
 KeyType T::*ComparatorWrapper<T, KeyType>::key = nullptr;
 
 template <typename T>
 class ChainedComparator {
 public:
-    static std::vector<int(*)(const T&, const T&)> comparators;
+    static SmrtPtr<ArraySequence<int(*)(const T&, const T&)>> comparators;
 
     static void AddComparator(int(*cmp)(const T&, const T&)) {
-        comparators.push_back(cmp);
+        comparators->append(cmp);
     }
 
     static int Compare(const T& a, const T& b) {
-        for (auto& cmp : comparators) {
-            int result = cmp(a, b);
+        for (int i = 0; i < comparators->get_length(); ++i) {
+            int result = comparators->get(i)(a, b);
             if (result != 0) {
                 return result;
             }
         }
-        return 0; // Если все компараторы вернули равенство, считаем объекты равными
+
+        return 0;
     }
 
     static void ClearComparators() {
-        comparators.clear();
+        comparators = SmrtPtr<ArraySequence<int(*)(const T&, const T&)>>(new ArraySequence<int(*)(const T&, const T&)>());
     }
 };
 
-// Определение статического члена
 template <typename T>
-std::vector<int(*)(const T&, const T&)> ChainedComparator<T>::comparators = {};
+SmrtPtr<ArraySequence<int(*)(const T&, const T&)>> ChainedComparator<T>::comparators = SmrtPtr<ArraySequence<int(*)(const T&, const T&)>>(new ArraySequence<int(*)(const T&, const T&)>());
 
-#endif COMPARE_HPP
+#endif // COMPARE_HPP

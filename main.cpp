@@ -1,83 +1,42 @@
 #include <iostream>
+#include <string>
 #include "BubbleSorter.hpp"
 #include "SmrtPtr.hpp"
 #include "data_structures/ArraySequence.h"
 #include "QuickSorter.hpp"
 #include "compare.hpp"
 #include "InsertionSorter.hpp"
-#include "Person.hpp"
+#include "person.hpp"
 #include "HeapSorter.hpp"
 #include "create_random.hpp"
-#include "sort_comparison.hpp"
+#include "csv_to_sequence.hpp"
+#include "sort_timer.hpp"
+#include "tests.hpp"
 
-int compare_by_first_name(const Person& a, const Person& b) {
-    return compare_by_key(a, b, &Person::first_name);
-}
-
-int compare_by_last_name(const Person& a, const Person& b) {
-    return compare_by_key(a, b, &Person::last_name);
-}
-
-int compare_by_birth_year(const Person& a, const Person& b) {
-    return compare_by_key(a, b, &Person::birth_year);
-}
-
-int compare_by_height(const Person& a, const Person& b) {
-    return compare_by_key(a, b, &Person::height);
-}
-
-int compare_by_weight(const Person& a, const Person& b) {
-    return compare_by_key(a, b, &Person::weight);
-}
-
-int compare_by_salary(const Person& a, const Person& b) {
-    return compare_by_key(a, b, &Person::salary);
-}
 
 int main() {
-    generate_and_write_persons_to_file(10000);
+    generate_and_write_persons_to_file(1000);
 
-    ArraySequence<Person> persons = load_persons_from_csv("../test.csv");
+    std::string input_filename = "../csv/test.csv";
+    SmrtPtr<ArraySequence<Person>> sequence = read_csv(input_filename);
 
-    // Спрашиваем пользователя, по какому ключу он хочет сортировать
-    std::cout << "Choose key for sorting:\n";
-    std::cout << "1. First Name\n";
-    std::cout << "2. Last Name\n";
-    std::cout << "3. Birth Year\n";
-    std::cout << "4. Height\n";
-    std::cout << "5. Weight\n";
-    std::cout << "6. Salary\n";
-    int choice;
-    std::cin >> choice;
+    // Bubble Sort
+    long long bubble_time = measure_sort_time<BubbleSorter<Person>, Person>(sequence, &Person::salary,"../csv/bubble.csv");
+    std::cout << "Bubble Sort took " << bubble_time << " ms.\n";
 
-    int (*cmp)(const Person&, const Person&) = nullptr;
+    // Quick Sort
+    long long quick_time = measure_sort_time<QuickSorter<Person>, Person>(sequence, &Person::height,"../csv/quick.csv");
+    std::cout << "Quick Sort took " << quick_time << " ms.\n";
 
-    switch (choice) {
-        case 1:
-            cmp = compare_by_first_name;
-        break;
-        case 2:
-            cmp = compare_by_last_name;
-        break;
-        case 3:
-            cmp = compare_by_birth_year;
-        break;
-        case 4:
-            cmp = compare_by_height;
-        break;
-        case 5:
-            cmp = compare_by_weight;
-        break;
-        case 6:
-            cmp = compare_by_salary;
-        break;
-        default:
-            std::cerr << "Invalid choice." << std::endl;
-        return 1;
-    }
+    // Heap Sort
+    long long heap_time = measure_sort_time<HeapSorter<Person>, Person>(sequence, &Person::height,"../csv/heap.csv");
+    std::cout << "Heap Sort took " << heap_time << " ms.\n";
 
-    compare_sorting_algorithms(persons, cmp);
+    //Insertion Sort
+    long long insertion_time = measure_sort_time<InsertionSorter<Person>, Person>(sequence, &Person::height,"../csv/insert.csv");
+    std::cout << "Insertion Sort took " << insertion_time << " ms.\n";
+
+    run_all_tests();
 
     return 0;
 }
-

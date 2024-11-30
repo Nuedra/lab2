@@ -25,7 +25,10 @@ ArraySequence<T>::ArraySequence(const ArraySequence<T>& other)
 
 template<typename T>
 ArraySequence<T>::~ArraySequence() {
-    delete data;
+    if (data != nullptr) {
+        delete data;
+        data = nullptr; // Обнуляем указатель, чтобы избежать повторного delete
+    }
 }
 
 template<typename T>

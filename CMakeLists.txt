@@ -9,11 +9,14 @@ add_executable(lab2 main.cpp
         QuickSorter.hpp
         compare.hpp
         Person.hpp
-        tests.cpp
         BubbleSorter.hpp
         InsertionSorter.hpp
         HeapSorter.hpp
         create_random.cpp
         create_random.hpp
-        sort_comparison.cpp
-        sort_comparison.hpp)
+        csv_to_sequence.cpp
+        csv_to_sequence.hpp
+        sort_timer.hpp
+        tests.hpp
+        tests.cpp
+)

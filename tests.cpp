@@ -4,6 +4,7 @@
 #include "QuickSorter.hpp"
 #include "Person.hpp"
 #include "tests.hpp"
+#include <iostream>
 
 // Тесты для всех сортировщиков
 void run_all_tests() {
@@ -32,4 +33,6 @@ void run_all_tests() {
 
     QuickSorter<Person> quick_sorter_person;
     run_tests_for_person(quick_sorter_person);
+
+    std::cout << "All tests are passed" << std::endl;
 }

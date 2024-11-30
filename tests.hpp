@@ -3,7 +3,7 @@
 
 #include "BubbleSorter.hpp"
 #include "data_structures/ArraySequence.h"
-#include "COMPARE.hpp"
+#include "compare.hpp"
 #include <cassert>
 #include <string>
 #include "Person.hpp"

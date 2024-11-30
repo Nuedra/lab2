@@ -90,5 +90,4 @@ void generate_and_write_persons_to_file(int number_of_persons) {
     // Используем выделенную функцию write_csv
     write_csv("../csv/test.csv", persons);
 
-    std::cout << "File test.csv created with " << number_of_persons << " Person entries." << std::endl;
 }

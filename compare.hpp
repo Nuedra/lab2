@@ -38,5 +38,32 @@ public:
 template <typename T, typename KeyType>
 KeyType T::*ComparatorWrapper<T, KeyType>::key = nullptr;
 
+template <typename T>
+class ChainedComparator {
+public:
+    static std::vector<int(*)(const T&, const T&)> comparators;
+
+    static void AddComparator(int(*cmp)(const T&, const T&)) {
+        comparators.push_back(cmp);
+    }
+
+    static int Compare(const T& a, const T& b) {
+        for (auto& cmp : comparators) {
+            int result = cmp(a, b);
+            if (result != 0) {
+                return result;
+            }
+        }
+        return 0; // Если все компараторы вернули равенство, считаем объекты равными
+    }
+
+    static void ClearComparators() {
+        comparators.clear();
+    }
+};
+
+// Определение статического члена
+template <typename T>
+std::vector<int(*)(const T&, const T&)> ChainedComparator<T>::comparators = {};
 
 #endif COMPARE_HPP

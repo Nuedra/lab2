@@ -6,7 +6,7 @@
 #include "compare.hpp"
 #include <cassert>
 #include <string>
-#include "Person.hpp"
+#include "person.hpp"
 
 // Универсальная функция тестирования для int
 template<typename Sorter>
@@ -70,23 +70,23 @@ void run_tests_for_int(Sorter& sorter) {
     assert(single->get(0) == 42);
 }
 
-// Универсальная функция тестирования для Person
+// Универсальная функция тестирования для person
 template<typename Sorter>
 void run_tests_for_person(Sorter& sorter) {
-    ComparatorWrapper<Person, int>::SetKey(&Person::salary);
+    ComparatorWrapper<person, int>::SetKey(&person::salary);
 
     // Test 1: Empty array
-    auto empty = SmrtPtr<ArraySequence<Person>>(new ArraySequence<Person>());
-    sorter.Sort(empty, ComparatorWrapper<Person, int>::Compare);
+    auto empty = SmrtPtr<ArraySequence<person>>(new ArraySequence<person>());
+    sorter.Sort(empty, ComparatorWrapper<person, int>::Compare);
     assert(empty->get_length() == 0);
 
     // Test 2: Array of Persons sorted by salary
-    auto persons = SmrtPtr<ArraySequence<Person>>(new ArraySequence<Person>());
+    auto persons = SmrtPtr<ArraySequence<person>>(new ArraySequence<person>());
     persons->append({"John", "Doe", 1985, 180.0f, 75.0f, 4000});
     persons->append({"Jane", "Smith", 1990, 165.0f, 60.0f, 3000});
     persons->append({"Alice", "Johnson", 1988, 170.0f, 65.0f, 5000});
     persons->append({"Bob", "Brown", 1982, 175.0f, 80.0f, 3500});
-    sorter.Sort(persons, ComparatorWrapper<Person, int>::Compare);
+    sorter.Sort(persons, ComparatorWrapper<person, int>::Compare);
     assert(persons->get(0).salary == 3000);
     assert(persons->get(1).salary == 3500);
     assert(persons->get(2).salary == 4000);

@@ -8,14 +8,12 @@ add_executable(lab2 main.cpp
         Isorter.hpp
         QuickSorter.hpp
         compare.hpp
-        Person.hpp
+        person.hpp
         BubbleSorter.hpp
         InsertionSorter.hpp
         HeapSorter.hpp
-        create_random.cpp
-        create_random.hpp
-        csv_to_sequence.cpp
-        csv_to_sequence.hpp
+        csv_actions.cpp
+        csv_actions.hpp
         sort_timer.hpp
         tests.hpp
         tests.cpp

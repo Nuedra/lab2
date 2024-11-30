@@ -7,13 +7,12 @@
 #include "InsertionSorter.hpp"
 #include "person.hpp"
 #include "HeapSorter.hpp"
-#include "create_random.hpp"
-#include "csv_to_sequence.hpp"
+#include "csv_actions.hpp"
 #include "sort_timer.hpp"
 #include "tests.hpp"
 
-
 int main() {
+
     run_all_tests();
     measure_and_save_sort_times();
     measure_and_save_sort_times_for_big();

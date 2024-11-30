@@ -14,8 +14,10 @@ int generate_random_int(int min, int max);
 
 float generate_random_float(float min, float max);
 
-void write_csv(const std::string& filename, SmrtPtr<ArraySequence<Person>> persons);
+void write_csv(const std::string& filename, SmrtPtr<ArraySequence<person>> persons);
 
 void generate_and_write_persons_to_file(int number_of_persons);
+
+SmrtPtr<ArraySequence<person>> read_csv(const std::string& filename);
 
 #endif // CREATE_RANDOM_HPP

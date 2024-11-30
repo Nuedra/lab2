@@ -10,6 +10,7 @@
 #include "csv_actions.hpp"
 #include "sort_timer.hpp"
 #include "tests.hpp"
+#include "compare.hpp"
 
 int main() {
     // Генерация данных
@@ -32,8 +33,8 @@ int main() {
     ComparatorWrapper<person, int>::SetKey(&person::salary);
     ChainedComparator<person>::AddComparator(ComparatorWrapper<person, int>::Compare);
 
-    ComparatorWrapper<person, float>::SetKey(&person::height);
-    ChainedComparator<person>::AddComparator(ComparatorWrapper<person, float>::Compare);
+    ComparatorWrapper<person, std::string>::SetKey(&person::last_name);
+    ChainedComparator<person>::AddComparator(ComparatorWrapper<person, std::string>::Compare);
 
     // Сортировка с использованием цепочки компараторов
     persons = sorter.Sort(persons, ChainedComparator<person>::Compare);

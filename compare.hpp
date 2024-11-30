@@ -1,7 +1,7 @@
 #ifndef COMPARE_HPP
 #define COMPARE_HPP
 
-#include "data_structures/ArraySequence.h"  // Подключение ArraySequence вместо vector
+#include <vector>
 
 template<typename T>
 int compare_default(const T& a, const T& b) {
@@ -43,15 +43,15 @@ KeyType T::*ComparatorWrapper<T, KeyType>::key = nullptr;
 template <typename T>
 class ChainedComparator {
 public:
-    static ArraySequence<int(*)(const T&, const T&)> comparators;  // Используем ArraySequence вместо vector
+    static std::vector<int(*)(const T&, const T&)> comparators;
 
     static void AddComparator(int(*cmp)(const T&, const T&)) {
-        comparators.append(cmp);  // Добавление через append
+        comparators.push_back(cmp);
     }
 
     static int Compare(const T& a, const T& b) {
-        for (int i = 0; i < comparators.get_length(); ++i) {
-            int result = comparators.get(i)(a, b);
+        for (auto& cmp : comparators) {
+            int result = cmp(a, b);
             if (result != 0) {
                 return result;
             }
@@ -60,12 +60,12 @@ public:
     }
 
     static void ClearComparators() {
-        comparators = ArraySequence<int(*)(const T&, const T&)>();
+        comparators.clear();
     }
 };
 
 // Определение статического члена
 template <typename T>
-ArraySequence<int(*)(const T&, const T&)> ChainedComparator<T>::comparators = {};
+std::vector<int(*)(const T&, const T&)> ChainedComparator<T>::comparators = {};
 
-#endif // COMPARE_HPP
+#endif COMPARE_HPP

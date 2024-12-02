@@ -6,7 +6,6 @@
 #include "tests.hpp"
 #include <iostream>
 
-
 void run_all_tests() {
     BubbleSorter<int> bubble_sorter_int;
     run_tests_for_int(bubble_sorter_int);

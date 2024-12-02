@@ -5,7 +5,6 @@
 #include <random>
 #include "person.hpp"
 #include "csv_actions.hpp"
-#include "SmrtPtr.hpp"
 #include <sstream>
 
 std::vector<std::string> load_names_from_file(const std::string& filename) {
@@ -46,7 +45,7 @@ float generate_random_float(float min, float max) {
     return distr(gen);
 }
 
-void write_csv(const std::string& filename, SmrtPtr<ArraySequence<person>> persons) {
+void write_csv(const std::string& filename, const ArraySequence<person>& persons) {
     std::ofstream file(filename);
     if (!file.is_open()) {
         std::cerr << "Error opening file: " << filename << std::endl;
@@ -55,8 +54,8 @@ void write_csv(const std::string& filename, SmrtPtr<ArraySequence<person>> perso
 
     file << "first_name,last_name,birth_year,height,weight,salary\n";
 
-    for (int i = 0; i < persons->get_length(); ++i) {
-        const auto& person = persons->get(i);
+    for (int i = 0; i < persons.get_length(); ++i) {
+        const auto& person = persons.get(i);
         file << person.first_name << ","
              << person.last_name << ","
              << person.birth_year << ","
@@ -72,7 +71,7 @@ void generate_and_write_persons_to_file(int number_of_persons) {
     std::vector<std::string> first_names = load_names_from_file("../names/first_names.txt");
     std::vector<std::string> last_names = load_names_from_file("../names/last_names.txt");
 
-    SmrtPtr<ArraySequence<person>> persons = SmrtPtr<ArraySequence<person>>(new ArraySequence<person>());
+    ArraySequence<person> persons;
 
     for (int i = 0; i < number_of_persons; ++i) {
         person person;
@@ -81,16 +80,15 @@ void generate_and_write_persons_to_file(int number_of_persons) {
         person.birth_year = generate_random_int(1950, 2010);
         person.height = generate_random_float(150.0, 200.0);
         person.weight = generate_random_float(50.0, 100.0);
-        person.salary = generate_random_int(30000, 150000);
-        persons->append(person);
+        person.salary = generate_random_int(30000, 30050);
+        persons.append(person);
     }
 
     write_csv("../csv/test.csv", persons);
-
 }
 
-SmrtPtr<ArraySequence<person>> read_csv(const std::string& filename) {
-    SmrtPtr<ArraySequence<person>> sequence = SmrtPtr<ArraySequence<person>>(new ArraySequence<person>());
+ArraySequence<person> read_csv(const std::string& filename) {
+    ArraySequence<person> sequence;
 
     std::ifstream file(filename);
     if (!file.is_open()) {
@@ -119,7 +117,7 @@ SmrtPtr<ArraySequence<person>> read_csv(const std::string& filename) {
         person.weight = std::stof(weight);
         person.salary = std::stoi(salary);
 
-        sequence->append(person);
+        sequence.append(person);
     }
 
     file.close();

@@ -1,69 +1,53 @@
 #ifndef COMPARE_HPP
 #define COMPARE_HPP
 
+#include <string>
+#include "person.hpp"
 #include "data_structures/ArraySequence.h"
-#include "SmrtPtr.hpp"
 
 template<typename T>
-int compare_default(const T& a, const T& b) {
-    if (a < b) {
-        return -1;
-    }
-    if (a > b) {
-        return 1;
-    }
+inline int compare_default(const T& a, const T& b) {
+    if (a < b) return -1;
+    if (a > b) return 1;
     return 0;
 }
 
-template <typename T, typename KeyType>
-class ComparatorWrapper {
-public:
-    static KeyType T::*key;
+inline int compare_person_first_name(const person& a, const person& b) {
+    return compare_default(a.first_name, b.first_name);
+}
 
-    static void SetKey(KeyType T::*key_field) {
-        key = key_field;
-    }
+inline int compare_person_last_name(const person& a, const person& b) {
+    return compare_default(a.last_name, b.last_name);
+}
 
-    static int Compare(const T& a, const T& b) {
-        if (a.*key < b.*key) {
-            return -1;
-        }
-        else if (a.*key > b.*key) {
-            return 1;
-        }
-        return 0;
-    }
-};
+inline int compare_person_birth_year(const person& a, const person& b) {
+    return compare_default(a.birth_year, b.birth_year);
+}
 
-template <typename T, typename KeyType>
-KeyType T::*ComparatorWrapper<T, KeyType>::key = nullptr;
+inline int compare_person_height(const person& a, const person& b) {
+    return compare_default(a.height, b.height);
+}
 
-template <typename T>
-class ChainedComparator {
-public:
-    static SmrtPtr<ArraySequence<int(*)(const T&, const T&)>> comparators;
+inline int compare_person_weight(const person& a, const person& b) {
+    return compare_default(a.weight, b.weight);
+}
 
-    static void AddComparator(int(*cmp)(const T&, const T&)) {
-        comparators->append(cmp);
-    }
+inline int compare_person_salary(const person& a, const person& b) {
+    return compare_default(a.salary, b.salary);
+}
 
-    static int Compare(const T& a, const T& b) {
-        for (int i = 0; i < comparators->get_length(); ++i) {
-            int result = comparators->get(i)(a, b);
-            if (result != 0) {
-                return result;
-            }
-        }
+inline int compare_person_salary_lastname(const person& a, const person& b) {
+    int result = compare_person_salary(a, b);
+    if (result != 0) return result;
+    return compare_person_last_name(a, b);
+}
 
-        return 0;
-    }
-
-    static void ClearComparators() {
-        comparators = SmrtPtr<ArraySequence<int(*)(const T&, const T&)>>(new ArraySequence<int(*)(const T&, const T&)>());
-    }
-};
-
-template <typename T>
-SmrtPtr<ArraySequence<int(*)(const T&, const T&)>> ChainedComparator<T>::comparators = SmrtPtr<ArraySequence<int(*)(const T&, const T&)>>(new ArraySequence<int(*)(const T&, const T&)>());
+inline int compare_person_salary_lastname_height(const person& a, const person& b) {
+    int result = compare_person_salary(a, b);
+    if (result != 0) return result;
+    result = compare_person_last_name(a, b);
+    if (result != 0) return result;
+    return compare_person_height(a, b);
+}
 
 #endif // COMPARE_HPP

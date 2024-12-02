@@ -9,7 +9,7 @@ ArraySequence<T>::ArraySequence() : data(new dynamic_array<T>(10)), length(0), c
 
 template<typename T>
 ArraySequence<T>::ArraySequence(const T* items, int count)
-    : data(new dynamic_array<T>(count)), length(count), capacity(count) {
+        : data(new dynamic_array<T>(count)), length(count), capacity(count) {
     for (int i = 0; i < count; ++i) {
         data->set(i, items[i]);
     }
@@ -17,22 +17,27 @@ ArraySequence<T>::ArraySequence(const T* items, int count)
 
 template<typename T>
 ArraySequence<T>::ArraySequence(const ArraySequence<T>& other)
-    : data(new dynamic_array<T>(other.capacity)), length(other.length), capacity(other.capacity) {
-    for (int i = 0; i < length; ++i) {
-        data->set(i, other.data->get(i));
+        : data(new dynamic_array<T>(*other.data)), length(other.length), capacity(other.capacity) {}
+
+template<typename T>
+ArraySequence<T>& ArraySequence<T>::operator=(const ArraySequence<T>& other) {
+    if (this != &other) {
+        delete data;
+        data = new dynamic_array<T>(*other.data);
+        length = other.length;
+        capacity = other.capacity;
     }
+    return *this;
 }
 
 template<typename T>
 ArraySequence<T>::~ArraySequence() {
-    if (data != nullptr) {
-        delete data;
-        data = nullptr; // Обнуляем указатель, чтобы избежать повторного delete
-    }
+    delete data;
+    data = nullptr;
 }
 
 template<typename T>
-T ArraySequence<T>::get_first() const {
+const T& ArraySequence<T>::get_first() const {
     if (length == 0) {
         throw std::out_of_range(EMPTY_ARRAY_SEQ);
     }
@@ -40,7 +45,7 @@ T ArraySequence<T>::get_first() const {
 }
 
 template<typename T>
-T ArraySequence<T>::get_last() const {
+const T& ArraySequence<T>::get_last() const {
     if (length == 0) {
         throw std::out_of_range(EMPTY_ARRAY_SEQ);
     }
@@ -48,7 +53,15 @@ T ArraySequence<T>::get_last() const {
 }
 
 template<typename T>
-T ArraySequence<T>::get(int index) const {
+const T& ArraySequence<T>::get(int index) const {
+    if (index < 0 || index >= length) {
+        throw std::out_of_range(INDEX_OUT_OF_RANGE);
+    }
+    return data->get(index);
+}
+
+template<typename T>
+T& ArraySequence<T>::get(int index) {
     if (index < 0 || index >= length) {
         throw std::out_of_range(INDEX_OUT_OF_RANGE);
     }
@@ -126,6 +139,16 @@ void ArraySequence<T>::set(int index, const T& item) {
 }
 
 template<typename T>
+void ArraySequence<T>::swap(int index1, int index2) {
+    if (index1 < 0 || index1 >= length || index2 < 0 || index2 >= length) {
+        throw std::out_of_range(INDEX_OUT_OF_RANGE);
+    }
+    T temp = data->get(index1);
+    data->set(index1, data->get(index2));
+    data->set(index2, temp);
+}
+
+template<typename T>
 sequence<T>* ArraySequence<T>::concat(sequence<T>* list) const {
     int new_length = length + list->get_length();
     T* new_array = new T[new_length];
@@ -138,6 +161,14 @@ sequence<T>* ArraySequence<T>::concat(sequence<T>* list) const {
     sequence<T>* new_sequence = new ArraySequence<T>(new_array, new_length);
     delete[] new_array;
     return new_sequence;
+}
+
+template<typename T>
+void ArraySequence<T>::reserve(int new_capacity) {
+    if (new_capacity > capacity) {
+        data->resize(new_capacity);
+        capacity = new_capacity;
+    }
 }
 
 #endif // ARRAY_SEQUENCE_TPP

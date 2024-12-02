@@ -62,10 +62,7 @@ void console_interface() {
 
             auto persons = read_csv("../csv/test.csv");
             QuickSorter<person> sorter;
-            ChainedComparator<person>::ClearComparators();
-            ComparatorWrapper<person, int>::SetKey(&person::salary);
-            ChainedComparator<person>::AddComparator(ComparatorWrapper<person, int>::Compare);
-            persons = sorter.Sort(persons, ChainedComparator<person>::Compare);
+            sorter.Sort(persons, compare_person_salary);
             write_csv("../csv/sorted_by_salary.csv", persons);
         }
         else if (choice == 5) {
@@ -87,12 +84,7 @@ void console_interface() {
 
             auto persons = read_csv("../csv/test.csv");
             QuickSorter<person> sorter;
-            ChainedComparator<person>::ClearComparators();
-            ComparatorWrapper<person, int>::SetKey(&person::salary);
-            ChainedComparator<person>::AddComparator(ComparatorWrapper<person, int>::Compare);
-            ComparatorWrapper<person, std::string>::SetKey(&person::last_name);
-            ChainedComparator<person>::AddComparator(ComparatorWrapper<person, std::string>::Compare);
-            persons = sorter.Sort(persons, ChainedComparator<person>::Compare);
+            sorter.Sort(persons, compare_person_salary_lastname);
             write_csv("../csv/sorted_by_salary_lastname.csv", persons);
         }
         else if (choice == 6) {
@@ -114,14 +106,7 @@ void console_interface() {
 
             auto persons = read_csv("../csv/test.csv");
             QuickSorter<person> sorter;
-            ChainedComparator<person>::ClearComparators();
-            ComparatorWrapper<person, int>::SetKey(&person::salary);
-            ChainedComparator<person>::AddComparator(ComparatorWrapper<person, int>::Compare);
-            ComparatorWrapper<person, std::string>::SetKey(&person::last_name);
-            ChainedComparator<person>::AddComparator(ComparatorWrapper<person, std::string>::Compare);
-            ComparatorWrapper<person, float>::SetKey(&person::height);
-            ChainedComparator<person>::AddComparator(ComparatorWrapper<person, float>::Compare);
-            persons = sorter.Sort(persons, ChainedComparator<person>::Compare);
+            sorter.Sort(persons, compare_person_salary_lastname_height);
             write_csv("../csv/sorted_by_salary_lastname_height.csv", persons);
         }
         else {

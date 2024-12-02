@@ -8,7 +8,7 @@
 #define EMPTY_ARRAY_SEQ "Array is empty"
 
 template<typename T>
-class ArraySequence: public sequence<T> {
+class ArraySequence : public sequence<T> {
 private:
     dynamic_array<T>* data;
     int length;
@@ -19,19 +19,25 @@ private:
 public:
     ArraySequence();
     ArraySequence(const T* items, int count);
-    ArraySequence(const ArraySequence<T>& ArraySequence);
+    ArraySequence(const ArraySequence<T>& other);
+    ArraySequence<T>& operator=(const ArraySequence<T>& other);
     ~ArraySequence();
 
-    T get_first() const override;
-    T get_last() const override;
-    T get(int index) const override;
+    // Переопределение виртуальных методов
+    const T& get_first() const override;
+    const T& get_last() const override;
+    const T& get(int index) const override;
+    T& get(int index) override;
+
     sequence<T>* get_subsequence(int start_index, int end_index) const override;
     int get_length() const override;
-    void append(const T& item);
+    void append(const T& item) override;
     void prepend(const T& item) override;
     void insert_at(const T& item, int index) override;
     void set(int index, const T& item) override;
     sequence<T>* concat(sequence<T>* list) const override;
+    void swap(int index1, int index2) override;
+    void reserve(int new_capacity) override;
 };
 
 #include "ArraySequence.tpp"

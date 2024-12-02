@@ -8,106 +8,103 @@
 #include <string>
 #include "person.hpp"
 
-template<typename Sorter>
-void run_tests_for_int(Sorter& sorter) {
-    auto empty = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
+inline void run_tests_for_int(ISorter<int>& sorter) {
+    ArraySequence<int> empty;
     sorter.Sort(empty, compare_default<int>);
-    assert(empty->get_length() == 0);
+    assert(empty.get_length() == 0);
 
-    auto sorted = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
-    sorted->append(1);
-    sorted->append(2);
-    sorted->append(3);
-    sorted->append(4);
-    sorted->append(5);
+    ArraySequence<int> sorted;
+    sorted.append(1);
+    sorted.append(2);
+    sorted.append(3);
+    sorted.append(4);
+    sorted.append(5);
     sorter.Sort(sorted, compare_default<int>);
-    for (int i = 0; i < sorted->get_length(); ++i) {
-        assert(sorted->get(i) == (i + 1));
+    for (int i = 0; i < sorted.get_length(); ++i) {
+        assert(sorted.get(i) == (i + 1));
     }
 
-    auto reverse_sorted = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
-    reverse_sorted->append(5);
-    reverse_sorted->append(4);
-    reverse_sorted->append(3);
-    reverse_sorted->append(2);
-    reverse_sorted->append(1);
+    ArraySequence<int> reverse_sorted;
+    reverse_sorted.append(5);
+    reverse_sorted.append(4);
+    reverse_sorted.append(3);
+    reverse_sorted.append(2);
+    reverse_sorted.append(1);
     sorter.Sort(reverse_sorted, compare_default<int>);
-    for (int i = 0; i < reverse_sorted->get_length(); ++i) {
-        assert(reverse_sorted->get(i) == (i + 1));
+    for (int i = 0; i < reverse_sorted.get_length(); ++i) {
+        assert(reverse_sorted.get(i) == (i + 1));
     }
 
-    auto duplicates = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
-    duplicates->append(4);
-    duplicates->append(2);
-    duplicates->append(2);
-    duplicates->append(8);
-    duplicates->append(3);
-    duplicates->append(3);
-    duplicates->append(1);
+    ArraySequence<int> duplicates;
+    duplicates.append(4);
+    duplicates.append(2);
+    duplicates.append(2);
+    duplicates.append(8);
+    duplicates.append(3);
+    duplicates.append(3);
+    duplicates.append(1);
     sorter.Sort(duplicates, compare_default<int>);
-    auto expected_duplicates = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
-    expected_duplicates->append(1);
-    expected_duplicates->append(2);
-    expected_duplicates->append(2);
-    expected_duplicates->append(3);
-    expected_duplicates->append(3);
-    expected_duplicates->append(4);
-    expected_duplicates->append(8);
-    for (int i = 0; i < duplicates->get_length(); ++i) {
-        assert(duplicates->get(i) == expected_duplicates->get(i));
+    ArraySequence<int> expected_duplicates;
+    expected_duplicates.append(1);
+    expected_duplicates.append(2);
+    expected_duplicates.append(2);
+    expected_duplicates.append(3);
+    expected_duplicates.append(3);
+    expected_duplicates.append(4);
+    expected_duplicates.append(8);
+    for (int i = 0; i < duplicates.get_length(); ++i) {
+        assert(duplicates.get(i) == expected_duplicates.get(i));
     }
 
-    auto single = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
-    single->append(42);
+    ArraySequence<int> single;
+    single.append(42);
     sorter.Sort(single, compare_default<int>);
-    assert(single->get_length() == 1);
-    assert(single->get(0) == 42);
+    assert(single.get_length() == 1);
+    assert(single.get(0) == 42);
 
-    auto empty_array = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
+    ArraySequence<int> empty_array;
     sorter.Sort(empty_array, compare_default<int>);
-    assert(empty_array->get_length() == 0);
+    assert(empty_array.get_length() == 0);
 
-    auto single_element = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
-    single_element->append(5);
+    ArraySequence<int> single_element;
+    single_element.append(5);
     sorter.Sort(single_element, compare_default<int>);
-    assert(single_element->get_length() == 1);
-    assert(single_element->get(0) == 5);
+    assert(single_element.get_length() == 1);
+    assert(single_element.get(0) == 5);
 
-    auto two_sorted = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
-    two_sorted->append(3);
-    two_sorted->append(4);
+    ArraySequence<int> two_sorted;
+    two_sorted.append(3);
+    two_sorted.append(4);
     sorter.Sort(two_sorted, compare_default<int>);
-    assert(two_sorted->get_length() == 2);
-    assert(two_sorted->get(0) == 3);
-    assert(two_sorted->get(1) == 4);
+    assert(two_sorted.get_length() == 2);
+    assert(two_sorted.get(0) == 3);
+    assert(two_sorted.get(1) == 4);
 
-    auto two_reverse_sorted = SmrtPtr<ArraySequence<int>>(new ArraySequence<int>());
-    two_reverse_sorted->append(4);
-    two_reverse_sorted->append(3);
+    ArraySequence<int> two_reverse_sorted;
+    two_reverse_sorted.append(4);
+    two_reverse_sorted.append(3);
     sorter.Sort(two_reverse_sorted, compare_default<int>);
-    assert(two_reverse_sorted->get_length() == 2);
-    assert(two_reverse_sorted->get(0) == 3);
-    assert(two_reverse_sorted->get(1) == 4);
+    assert(two_reverse_sorted.get_length() == 2);
+    assert(two_reverse_sorted.get(0) == 3);
+    assert(two_reverse_sorted.get(1) == 4);
 }
 
-template<typename Sorter>
-void run_tests_for_person(Sorter& sorter) {
-    ComparatorWrapper<person, int>::SetKey(&person::salary);
+inline void run_tests_for_person(ISorter<person>& sorter) {
+    ArraySequence<person> empty;
+    sorter.Sort(empty, compare_person_salary);
+    assert(empty.get_length() == 0);
 
-    auto empty = SmrtPtr<ArraySequence<person>>(new ArraySequence<person>());
-    sorter.Sort(empty, ComparatorWrapper<person, int>::Compare);
-    assert(empty->get_length() == 0);
+    ArraySequence<person> persons;
+    persons.append({"John", "Doe", 1985, 180.0f, 75.0f, 4000});
+    persons.append({"Jane", "Smith", 1990, 165.0f, 60.0f, 3000});
+    persons.append({"Alice", "Johnson", 1988, 170.0f, 65.0f, 5000});
+    persons.append({"Bob", "Brown", 1982, 175.0f, 80.0f, 3500});
+    sorter.Sort(persons, compare_person_salary);
+    assert(persons.get(0).salary == 3000);
+    assert(persons.get(1).salary == 3500);
+    assert(persons.get(2).salary == 4000);
+    assert(persons.get(3).salary == 5000);
 
-    auto persons = SmrtPtr<ArraySequence<person>>(new ArraySequence<person>());
-    persons->append({"John", "Doe", 1985, 180.0f, 75.0f, 4000});
-    persons->append({"Jane", "Smith", 1990, 165.0f, 60.0f, 3000});
-    persons->append({"Alice", "Johnson", 1988, 170.0f, 65.0f, 5000});
-    persons->append({"Bob", "Brown", 1982, 175.0f, 80.0f, 3500});
-    sorter.Sort(persons, ComparatorWrapper<person, int>::Compare);
-    assert(persons->get(0).salary == 3000);
-    assert(persons->get(1).salary == 3500);
-    assert(persons->get(2).salary == 4000);
-    assert(persons->get(3).salary == 5000);
 }
 
 void run_all_tests();

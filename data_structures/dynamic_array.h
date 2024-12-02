@@ -1,3 +1,4 @@
+// dynamic_array.h
 #ifndef DYNAMIC_ARRAY_H
 #define DYNAMIC_ARRAY_H
 
@@ -17,10 +18,12 @@ public:
     dynamic_array(T* items, int count);
     dynamic_array(int size);
     dynamic_array(const dynamic_array<T>& other);
+    dynamic_array<T>& operator=(const dynamic_array<T>& other);
     ~dynamic_array();
 
-    T get(int index) const;
-    void set(int index, T value);
+    const T& get(int index) const;
+    T& get(int index);
+    void set(int index, const T& value);
     int get_size() const;
     void resize(int new_size);
 

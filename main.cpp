@@ -1,13 +1,12 @@
 #include <iostream>
-#include <string>
-#include "SmrtPtr.hpp"
+#include <cstdlib>
 #include "QuickSorter.hpp"
 #include "person.hpp"
 #include "csv_actions.hpp"
 #include "sort_timer.hpp"
 #include "tests.hpp"
 #include "compare.hpp"
-#include <fstream>
+#include "gnuplot-iostream.h"
 
 void console_interface() {
     while (true) {
@@ -20,9 +19,20 @@ void console_interface() {
         std::cout << "6. Sort by three attributes (salary, last_name, height)" << std::endl;
         std::cout << "7. Exit" << std::endl;
 
+        char choice_str[100];
         int choice;
-        std::cout << "Select an action (1-7): ";
-        std::cin >> choice;
+
+        while (true) {
+            std::cout << "Select an action (1-7): ";
+            std::cin.getline(choice_str, 100);
+            choice = atoi(choice_str);
+
+            if (choice >= 1 && choice <= 7) {
+                break;
+            } else {
+                std::cout << "Invalid choice. Please enter a number between 1 and 7." << std::endl;
+            }
+        }
 
         if (choice == 1) {
             run_all_tests();
@@ -34,15 +44,47 @@ void console_interface() {
             measure_and_save_sort_times_for_big();
         }
         else if (choice == 4) {
+            int number_of_persons;
+            char input_str[100];
+
+            while (true) {
+                std::cout << "Enter the number of people to generate: ";
+                std::cin.getline(input_str, 100);
+                number_of_persons = atoi(input_str);
+                if (number_of_persons > 0) {
+                    break;
+                } else {
+                    std::cout << "Invalid number. Please enter a positive integer." << std::endl;
+                }
+            }
+
+            generate_and_write_persons_to_file(number_of_persons);
+
             auto persons = read_csv("../csv/test.csv");
             QuickSorter<person> sorter;
             ChainedComparator<person>::ClearComparators();
             ComparatorWrapper<person, int>::SetKey(&person::salary);
             ChainedComparator<person>::AddComparator(ComparatorWrapper<person, int>::Compare);
             persons = sorter.Sort(persons, ChainedComparator<person>::Compare);
-            write_csv("../csv/sorted_by_salary.csv", persons); // Немедленно записываем файл
+            write_csv("../csv/sorted_by_salary.csv", persons);
         }
         else if (choice == 5) {
+            int number_of_persons;
+            char input_str[100];
+
+            while (true) {
+                std::cout << "Enter the number of people to generate: ";
+                std::cin.getline(input_str, 100);
+                number_of_persons = atoi(input_str);
+                if (number_of_persons > 0) {
+                    break;
+                } else {
+                    std::cout << "Invalid number. Please enter a positive integer." << std::endl;
+                }
+            }
+
+            generate_and_write_persons_to_file(number_of_persons);
+
             auto persons = read_csv("../csv/test.csv");
             QuickSorter<person> sorter;
             ChainedComparator<person>::ClearComparators();
@@ -51,9 +93,25 @@ void console_interface() {
             ComparatorWrapper<person, std::string>::SetKey(&person::last_name);
             ChainedComparator<person>::AddComparator(ComparatorWrapper<person, std::string>::Compare);
             persons = sorter.Sort(persons, ChainedComparator<person>::Compare);
-            write_csv("../csv/sorted_by_salary_lastname.csv", persons); // Немедленно записываем файл
+            write_csv("../csv/sorted_by_salary_lastname.csv", persons);
         }
         else if (choice == 6) {
+            int number_of_persons;
+            char input_str[100];
+
+            while (true) {
+                std::cout << "Enter the number of people to generate: ";
+                std::cin.getline(input_str, 100);
+                number_of_persons = atoi(input_str);
+                if (number_of_persons > 0) {
+                    break;
+                } else {
+                    std::cout << "Invalid number. Please enter a positive integer." << std::endl;
+                }
+            }
+
+            generate_and_write_persons_to_file(number_of_persons);
+
             auto persons = read_csv("../csv/test.csv");
             QuickSorter<person> sorter;
             ChainedComparator<person>::ClearComparators();
@@ -64,22 +122,15 @@ void console_interface() {
             ComparatorWrapper<person, float>::SetKey(&person::height);
             ChainedComparator<person>::AddComparator(ComparatorWrapper<person, float>::Compare);
             persons = sorter.Sort(persons, ChainedComparator<person>::Compare);
-            write_csv("../csv/sorted_by_salary_lastname_height.csv", persons); // Немедленно записываем файл
-        }
-        else if (choice == 7) {
-            break;
+            write_csv("../csv/sorted_by_salary_lastname_height.csv", persons);
         }
         else {
-            std::cout << "Invalid choice. Please try again." << std::endl;
+            break;
         }
     }
 }
 
 int main() {
-    int number_of_persons;
-    std::cout << "Enter the number of people to generate: ";
-    std::cin >> number_of_persons;
-    generate_and_write_persons_to_file(number_of_persons); // Генерация данных сразу записывается в файл
-    console_interface(); // Запуск консольного интерфейса
+    console_interface();
     return 0;
 }

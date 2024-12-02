@@ -3,7 +3,23 @@ project(lab2)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(lab2 main.cpp
+# Поиск Boost с необходимыми компонентами
+find_package(Boost REQUIRED COMPONENTS iostreams)
+
+if(Boost_FOUND)
+    message(STATUS "Boost найден!")
+    message(STATUS "Boost Include Dirs: ${Boost_INCLUDE_DIRS}")
+    message(STATUS "Boost Libraries: ${Boost_LIBRARIES}")
+else()
+    message(FATAL_ERROR "Boost не найден!")
+endif()
+
+# Включение заголовочных файлов Boost
+include_directories(${Boost_INCLUDE_DIRS})
+
+# Добавление исполняемого файла
+add_executable(lab2
+        main.cpp
         SmrtPtr.hpp
         Isorter.hpp
         QuickSorter.hpp
@@ -17,4 +33,9 @@ add_executable(lab2 main.cpp
         sort_timer.hpp
         tests.hpp
         tests.cpp
+        graphics.cpp
+        graphics.hpp
 )
+
+# Линковка с библиотеками Boost
+target_link_libraries(lab2 ${Boost_LIBRARIES})

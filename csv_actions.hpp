@@ -19,4 +19,8 @@ void generate_and_write_persons_to_file(int number_of_persons);
 
 ArraySequence<person> read_csv(const std::string& filename);
 
+void generate_and_write_sorted_persons_to_file(int number_of_persons);
+
+void generate_and_write_reverse_sorted_persons_to_file(int number_of_persons);
+
 #endif // CREATE_RANDOM_HPP

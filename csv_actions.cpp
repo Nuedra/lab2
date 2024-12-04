@@ -6,6 +6,8 @@
 #include "person.hpp"
 #include "csv_actions.hpp"
 #include <sstream>
+#include "QuickSorter.hpp"
+#include "compare.hpp"
 
 std::vector<std::string> load_names_from_file(const std::string& filename) {
     std::vector<std::string> names;
@@ -80,11 +82,11 @@ void generate_and_write_persons_to_file(int number_of_persons) {
         person.birth_year = generate_random_int(1950, 2010);
         person.height = generate_random_float(150.0, 200.0);
         person.weight = generate_random_float(50.0, 100.0);
-        person.salary = generate_random_int(30000, 30050);
+        person.salary = generate_random_int(30000, 60000);
         persons.append(person);
     }
 
-    write_csv("../csv/test.csv", persons);
+    write_csv("../csv/data.csv", persons);
 }
 
 ArraySequence<person> read_csv(const std::string& filename) {
@@ -122,4 +124,27 @@ ArraySequence<person> read_csv(const std::string& filename) {
 
     file.close();
     return sequence;
+}
+
+void generate_and_write_sorted_persons_to_file(int number_of_persons) {
+    generate_and_write_persons_to_file(number_of_persons);
+    ArraySequence<person> sequence = read_csv("../csv/data.csv");
+    QuickSorter<person> sorter;
+    sorter.Sort(sequence, compare_person_salary);
+    write_csv("../csv/sorted.csv", sequence);
+}
+
+void generate_and_write_reverse_sorted_persons_to_file(int number_of_persons) {
+    generate_and_write_persons_to_file(number_of_persons);
+    ArraySequence<person> sequence = read_csv("../csv/data.csv");
+    QuickSorter<person> sorter;
+    sorter.Sort(sequence, compare_person_salary);
+
+    // Обратный порядок
+    int len = sequence.get_length();
+    for (int i = 0; i < len / 2; ++i) {
+        sequence.swap(i, len - i - 1);
+    }
+
+    write_csv("../csv/reverse_sorted.csv", sequence);
 }

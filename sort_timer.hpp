@@ -12,6 +12,12 @@
 #include "person.hpp"
 #include "csv_actions.hpp"
 
+enum DataType {
+    NORMAL_DATA = 1,
+    SORTED_DATA = 2,
+    REVERSE_SORTED_DATA = 3
+};
+
 long long measure_sort_time(ISorter<person>& sorter,
                             const ArraySequence<person>& sequence,
                             int (*cmp)(const person&, const person&),
@@ -33,14 +39,47 @@ long long measure_sort_time(ISorter<person>& sorter,
 }
 
 
-void measure_and_save_sort_times() {
-    std::ofstream csv_file("../csv/sort_times.csv");
+void measure_and_save_sort_times(DataType data_type) {
+    std::string filename;
+    if (data_type == NORMAL_DATA) {
+        filename = "../csv/sort_times.csv";
+    }
+    else if (data_type == SORTED_DATA) {
+        filename = "../csv/sort_times_sorted.csv";
+    }
+    else if (data_type == REVERSE_SORTED_DATA) {
+        filename = "../csv/sort_times_reverse_sorted.csv";
+    }
+    else {
+        std::cerr << "Unknown data type!" << std::endl;
+        return;
+    }
+
+    std::ofstream csv_file(filename);
+    if (!csv_file.is_open()) {
+        std::cerr << "Failed to open file: " << filename << std::endl;
+        return;
+    }
     csv_file << "Data Size,Bubble Sort ms,Quick Sort ms,Heap Sort ms,Insertion Sort ms" << std::endl;
 
-    const int step = 500;
-    for (int size = step; size <= 5000; size += step) {
-        generate_and_write_persons_to_file(size);
-        std::string input_filename = "../csv/test.csv";
+    const int step = 250;
+    for (int size = step; size <= step * 20; size += step) {
+        std::string input_filename;
+
+        // Генерация данных в зависимости от выбранного типа
+        if (data_type == NORMAL_DATA) {
+            generate_and_write_persons_to_file(size);
+            input_filename = "../csv/data.csv";
+        }
+        else if (data_type == SORTED_DATA) {
+            generate_and_write_sorted_persons_to_file(size);
+            input_filename = "../csv/sorted.csv";
+        }
+        else {
+            generate_and_write_reverse_sorted_persons_to_file(size);
+            input_filename = "../csv/reverse_sorted.csv";
+        }
+
         ArraySequence<person> sequence = read_csv(input_filename);
 
         ArraySequence<person> sorted_sequence;
@@ -56,20 +95,53 @@ void measure_and_save_sort_times() {
         long long insertion_time = measure_sort_time(insertion_sorter, sequence, compare_person_salary, sorted_sequence);
 
         csv_file << size << "," << bubble_time << "," << quick_time << "," << heap_time << "," << insertion_time << std::endl;
-
     }
 
     csv_file.close();
 }
 
-void measure_and_save_sort_times_for_big() {
-    std::ofstream csv_file("../csv/sort_times_big_count.csv");
+
+void measure_and_save_sort_times_for_big(DataType data_type) {
+    std::string filename;
+    if (data_type == NORMAL_DATA) {
+        filename = "../csv/sort_times_big_count.csv";
+    }
+    else if (data_type == SORTED_DATA) {
+        filename = "../csv/sort_times_big_count_sorted.csv";
+    }
+    else if (data_type == REVERSE_SORTED_DATA) {
+        filename = "../csv/sort_times_big_count_reverse_sorted.csv";
+    }
+    else {
+        std::cerr << "Unknown data type!" << std::endl;
+        return;
+    }
+
+    std::ofstream csv_file(filename);
+    if (!csv_file.is_open()) {
+        std::cerr << "Failed to open file: " << filename << std::endl;
+        return;
+    }
     csv_file << "Data Size,Quick Sort ms,Heap Sort ms" << std::endl;
 
-    const int step = 100000;
-    for (int size = step; size <= 1000000; size += step) {
-        generate_and_write_persons_to_file(size);
-        std::string input_filename = "../csv/test.csv";
+    const int step = 1000000;
+    for (int size = step; size <= step*10; size += step) {
+        std::string input_filename;
+
+        // Генерация данных в зависимости от выбранного типа
+        if (data_type == NORMAL_DATA) {
+            generate_and_write_persons_to_file(size);
+            input_filename = "../csv/data.csv";
+        }
+        else if (data_type == SORTED_DATA) {
+            generate_and_write_sorted_persons_to_file(size);
+            input_filename = "../csv/sorted.csv";
+        }
+        else {
+            generate_and_write_reverse_sorted_persons_to_file(size);
+            input_filename = "../csv/reverse_sorted.csv";
+        }
+
         ArraySequence<person> sequence = read_csv(input_filename);
 
         ArraySequence<person> sorted_sequence;
@@ -81,7 +153,6 @@ void measure_and_save_sort_times_for_big() {
         long long heap_time = measure_sort_time(heap_sorter, sequence, compare_person_salary, sorted_sequence);
 
         csv_file << size << "," << quick_time << "," << heap_time << std::endl;
-
     }
 
     csv_file.close();

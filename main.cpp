@@ -12,7 +12,7 @@ void console_interface() {
     while (true) {
         std::cout << "\nConsole Interface Menu:" << std::endl;
         std::cout << "1. Run sorting tests" << std::endl;
-        std::cout << "2. Compare sorting time on normal data (salary)" << std::endl;
+        std::cout << "2. Compare sorting time on normal data (salary) on random, sorted or reverse_sorted" << std::endl;
         std::cout << "3. Compare sorting time on large data (salary)" << std::endl;
         std::cout << "4. Sort by one attribute (salary)" << std::endl;
         std::cout << "5. Sort by two attributes (salary, last_name)" << std::endl;
@@ -39,11 +39,12 @@ void console_interface() {
             run_all_tests();
         }
 
-        else if (choice == 2 || choice == 3) {
+        else if (choice == 2) {
             std::cout << "Select data type:" << std::endl;
-            std::cout << "1. Normal data" << std::endl;
+            std::cout << "1. Random" << std::endl;
             std::cout << "2. Sorted data" << std::endl;
             std::cout << "3. Reverse-sorted data" << std::endl;
+
             int data_choice;
             std::cin >> data_choice;
             std::cin.ignore();
@@ -63,12 +64,11 @@ void console_interface() {
                 data_type = NORMAL_DATA;
             }
 
-            if (choice == 2) {
-                measure_and_save_sort_times(data_type);
-            }
-            else {
-                measure_and_save_sort_times_for_big(data_type);
-            }
+            measure_and_save_sort_times(data_type);
+        }
+
+        else if(choice == 3){
+            measure_and_save_sort_times_for_big();
         }
 
         else if (choice == 4) {

@@ -43,7 +43,6 @@ long long measure_sort_time(ISorter<person>& sorter,
     return duration;
 }
 
-
 void measure_and_save_sort_times(DataType data_type) {
     std::string filename;
     std::string png_filename;
@@ -106,7 +105,6 @@ void measure_and_save_sort_times(DataType data_type) {
 
     plot_sort_times(filename, png_filename);
 }
-
 
 void measure_and_save_sort_times_for_big() {
     std::string filename;

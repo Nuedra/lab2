@@ -1,4 +1,3 @@
-// plot_graphs.cpp
 #include "graphics.hpp"
 #include "gnuplot-iostream.h"
 #include <vector>
@@ -6,7 +5,6 @@
 #include <sstream>
 
 void plot_sort_times(const std::string& csv_filename, const std::string& png_filename) {
-    // Чтение данных из CSV файла
     std::ifstream csv_file(csv_filename);
     if (!csv_file.is_open()) {
         std::cerr << "Failed to open CSV file: " << csv_filename << std::endl;
@@ -14,9 +12,8 @@ void plot_sort_times(const std::string& csv_filename, const std::string& png_fil
     }
 
     std::string line;
-    std::getline(csv_file, line); // Читаем заголовок
+    std::getline(csv_file, line);
 
-    // Парсим заголовок, чтобы получить названия сортировок
     std::vector<std::string> headers;
     std::istringstream header_ss(line);
     std::string header_token;
@@ -29,27 +26,22 @@ void plot_sort_times(const std::string& csv_filename, const std::string& png_fil
         return;
     }
 
-    // Проверяем, что первая колонка - 'Data Size'
     if (headers[0] != "Data Size") {
         std::cerr << "First column must be 'Data Size'." << std::endl;
         return;
     }
 
-    // Создаем векторы для данных
     std::vector<int> data_sizes;
     std::vector<std::vector<long long>> sort_times(headers.size() - 1); // Количество сортировок
 
-    // Чтение данных
     while (std::getline(csv_file, line)) {
         std::istringstream ss(line);
         std::string token;
 
-        // Читаем Data Size
         std::getline(ss, token, ',');
         int data_size = std::stoi(token);
         data_sizes.push_back(data_size);
 
-        // Читаем времена сортировок
         for (size_t i = 0; i < sort_times.size(); ++i) {
             if (!std::getline(ss, token, ',')) {
                 std::cerr << "Data row has missing columns." << std::endl;
@@ -61,7 +53,6 @@ void plot_sort_times(const std::string& csv_filename, const std::string& png_fil
 
     csv_file.close();
 
-    // Построение графика с использованием gnuplot-iostream
     Gnuplot gp;
 
     gp << "set terminal png size 800,600 enhanced font 'Arial,10'\n";

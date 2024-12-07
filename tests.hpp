@@ -94,7 +94,7 @@ void run_tests_for_person(ISorter<person>& sorter) {
     ArraySequence<person> empty;
     sorter.Sort(empty, compare_person_salary);
     assert(empty.get_length() == 0);
-
+    // Протестировать разные компораторы
     ArraySequence<person> persons;
     persons.append({"John", "Doe", 1985, 180.0f, 75.0f, 4000});
     persons.append({"Jane", "Smith", 1990, 165.0f, 60.0f, 3000});

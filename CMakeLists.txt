@@ -20,7 +20,6 @@ include_directories(${Boost_INCLUDE_DIRS})
 # Добавление исполняемого файла
 add_executable(lab2
         main.cpp
-        SmrtPtr.hpp
         Isorter.hpp
         QuickSorter.hpp
         compare.hpp

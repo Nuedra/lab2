@@ -17,6 +17,7 @@ void plot_sort_times(const std::string& csv_filename, const std::string& png_fil
     std::vector<std::string> headers;
     std::istringstream header_ss(line);
     std::string header_token;
+
     while (std::getline(header_ss, header_token, ',')) {
         headers.push_back(header_token);
     }

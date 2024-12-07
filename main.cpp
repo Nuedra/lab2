@@ -57,8 +57,13 @@ void sort_and_save(const std::string& input_file, const std::string& output_file
     write_csv(output_file, persons);
 }
 
+void output_on_screen(std::string filename){
+    std::string command = "open " + filename;
+    system(command.c_str());
+}
 
 void console_interface() {
+    std::string filename = "../csv/data.csv";
     while (true) {
         display_menu();
         int choice = get_valid_choice(1, 7);
@@ -82,19 +87,25 @@ void console_interface() {
             measure_and_save_sort_times_for_big();
         }
         else if (choice == 4) {
+            std::string output_file = "../csv/sorted_by_salary.csv";
             int number_of_persons = get_positive_integer("Enter the number of people to generate: ");
             generate_and_write_persons_to_file(number_of_persons);
-            sort_and_save("../csv/data.csv", "../csv/sorted_by_salary.csv", compare_person_salary);
+            sort_and_save(filename, output_file, compare_person_salary);
+            output_on_screen(output_file);
         }
         else if (choice == 5) {
+            std::string output_file = "../csv/sorted_by_salary_lastname.csv";
             int number_of_persons = get_positive_integer("Enter the number of people to generate: ");
             generate_and_write_persons_to_file(number_of_persons);
-            sort_and_save("../csv/data.csv", "../csv/sorted_by_salary_lastname.csv", compare_person_salary_lastname);
+            sort_and_save(filename, output_file, compare_person_salary_lastname);
+            output_on_screen(output_file);
         }
         else if (choice == 6) {
+            std::string output_file = "../csv/sorted_by_salary_lastname_height.csv";
             int number_of_persons = get_positive_integer("Enter the number of people to generate: ");
             generate_and_write_persons_to_file(number_of_persons);
-            sort_and_save("../csv/data.csv", "../csv/sorted_by_salary_lastname_height.csv", compare_person_salary_lastname_height);
+            sort_and_save(filename, output_file, compare_person_salary_lastname_height);
+            output_on_screen(output_file);
         }
         else {
             break;

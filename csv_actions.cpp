@@ -79,7 +79,7 @@ void generate_and_write_persons_to_file(int number_of_persons) {
         person.birth_year = generate_random_int(1950, 2010);
         person.height = generate_random_float(150.0, 200.0);
         person.weight = generate_random_float(50.0, 100.0);
-        person.salary = generate_random_int(30000, 60000);
+        person.salary = generate_random_int(30000, 80000);
         persons.append(person);
     }
 

@@ -1,5 +1,4 @@
 #include <iostream>
-#include <cstdlib>
 #include "QuickSorter.hpp"
 #include "person.hpp"
 #include "csv_actions.hpp"
@@ -8,139 +7,94 @@
 #include "compare.hpp"
 #include "gnuplot-iostream.h"
 
+void display_menu() {
+    std::cout << "\nConsole Interface Menu:" << std::endl;
+    std::cout << "1. Run sorting tests" << std::endl;
+    std::cout << "2. Compare sorting time on normal data (salary) on random, sorted or reverse_sorted" << std::endl;
+    std::cout << "3. Compare sorting time on large data (salary)" << std::endl;
+    std::cout << "4. Sort by one attribute (salary)" << std::endl;
+    std::cout << "5. Sort by two attributes (salary, last_name)" << std::endl;
+    std::cout << "6. Sort by three attributes (salary, last_name, height)" << std::endl;
+    std::cout << "7. Exit" << std::endl;
+}
+
+int get_valid_choice(int min, int max) {
+    char input_str[100];
+    int choice;
+
+    while (true) {
+        std::cout << "Select an action (" << min << "-" << max << "): ";
+        std::cin.getline(input_str, 100);
+        choice = atoi(input_str);
+
+        if (choice >= min && choice <= max) {
+            return choice;
+        }
+        std::cout << "Invalid choice. Please enter a number between " << min << " and " << max << "." << std::endl;
+    }
+}
+
+int get_positive_integer(const std::string& prompt) {
+    char input_str[100];
+    int number;
+
+    while (true) {
+        std::cout << prompt;
+        std::cin.getline(input_str, 100);
+        number = atoi(input_str);
+        if (number > 0) {
+            return number;
+        }
+        std::cout << "Invalid number. Please enter a positive integer." << std::endl;
+    }
+}
+
+void sort_and_save(const std::string& input_file, const std::string& output_file,
+                   int (*comparator)(const person&, const person&)) {
+    auto persons = read_csv(input_file);
+    QuickSorter<person> sorter;
+    sorter.Sort(persons, comparator);
+    write_csv(output_file, persons);
+}
+
+
 void console_interface() {
     while (true) {
-        std::cout << "\nConsole Interface Menu:" << std::endl;
-        std::cout << "1. Run sorting tests" << std::endl;
-        std::cout << "2. Compare sorting time on normal data (salary) on random, sorted or reverse_sorted" << std::endl;
-        std::cout << "3. Compare sorting time on large data (salary)" << std::endl;
-        std::cout << "4. Sort by one attribute (salary)" << std::endl;
-        std::cout << "5. Sort by two attributes (salary, last_name)" << std::endl;
-        std::cout << "6. Sort by three attributes (salary, last_name, height)" << std::endl;
-        std::cout << "7. Exit" << std::endl;
-
-        char choice_str[100];
-        int choice;
-
-        while (true) {
-            std::cout << "Select an action (1-7): ";
-            std::cin.getline(choice_str, 100);
-            choice = atoi(choice_str);
-
-            if (choice >= 1 && choice <= 7) {
-                break;
-            }
-            else {
-                std::cout << "Invalid choice. Please enter a number between 1 and 7." << std::endl;
-            }
-        }
+        display_menu();
+        int choice = get_valid_choice(1, 7);
 
         if (choice == 1) {
             run_all_tests();
         }
-
         else if (choice == 2) {
             std::cout << "Select data type:" << std::endl;
             std::cout << "1. Random" << std::endl;
             std::cout << "2. Sorted data" << std::endl;
             std::cout << "3. Reverse-sorted data" << std::endl;
 
-            int data_choice;
-            std::cin >> data_choice;
-            std::cin.ignore();
-
-            DataType data_type;
-            if (data_choice == 1) {
-                data_type = NORMAL_DATA;
-            }
-            else if (data_choice == 2) {
-                data_type = SORTED_DATA;
-            }
-            else if (data_choice == 3) {
-                data_type = REVERSE_SORTED_DATA;
-            }
-            else {
-                std::cout << "Invalid choice. Using normal data." << std::endl;
-                data_type = NORMAL_DATA;
-            }
+            int data_choice = get_valid_choice(1, 3);
+            DataType data_type = (data_choice == 1) ? NORMAL_DATA :
+                                 (data_choice == 2) ? SORTED_DATA : REVERSE_SORTED_DATA;
 
             measure_and_save_sort_times(data_type);
         }
-
-        else if(choice == 3){
+        else if (choice == 3) {
             measure_and_save_sort_times_for_big();
         }
-
         else if (choice == 4) {
-            int number_of_persons;
-            char input_str[100];
-
-            while (true) {
-                std::cout << "Enter the number of people to generate: ";
-                std::cin.getline(input_str, 100);
-                number_of_persons = atoi(input_str);
-                if (number_of_persons > 0) {
-                    break;
-                }
-                else {
-                    std::cout << "Invalid number. Please enter a positive integer." << std::endl;
-                }
-            }
-
+            int number_of_persons = get_positive_integer("Enter the number of people to generate: ");
             generate_and_write_persons_to_file(number_of_persons);
-
-            auto persons = read_csv("../csv/data.csv");
-            QuickSorter<person> sorter;
-            sorter.Sort(persons, compare_person_salary);
-            write_csv("../csv/sorted_by_salary.csv", persons);
+            sort_and_save("../csv/data.csv", "../csv/sorted_by_salary.csv", compare_person_salary);
         }
-
         else if (choice == 5) {
-            int number_of_persons;
-            char input_str[100];
-
-            while (true) {
-                std::cout << "Enter the number of people to generate: ";
-                std::cin.getline(input_str, 100);
-                number_of_persons = atoi(input_str);
-                if (number_of_persons > 0) {
-                    break;
-                }
-                else {
-                    std::cout << "Invalid number. Please enter a positive integer." << std::endl;
-                }
-            }
-
+            int number_of_persons = get_positive_integer("Enter the number of people to generate: ");
             generate_and_write_persons_to_file(number_of_persons);
-
-            auto persons = read_csv("../csv/data.csv");
-            QuickSorter<person> sorter;
-            sorter.Sort(persons, compare_person_salary_lastname);
-            write_csv("../csv/sorted_by_salary_lastname.csv", persons);
+            sort_and_save("../csv/data.csv", "../csv/sorted_by_salary_lastname.csv", compare_person_salary_lastname);
         }
-
         else if (choice == 6) {
-            int number_of_persons;
-            char input_str[100];
-
-            while (true) {
-                std::cout << "Enter the number of people to generate: ";
-                std::cin.getline(input_str, 100);
-                number_of_persons = atoi(input_str);
-                if (number_of_persons > 0) {
-                    break;
-                }
-                else {
-                    std::cout << "Invalid number. Please enter a positive integer." << std::endl;
-                }
-            }
-
+            int number_of_persons = get_positive_integer("Enter the number of people to generate: ");
             generate_and_write_persons_to_file(number_of_persons);
-
-            auto persons = read_csv("../csv/data.csv");
-            QuickSorter<person> sorter;
-            sorter.Sort(persons, compare_person_salary_lastname_height);
-            write_csv("../csv/sorted_by_salary_lastname_height.csv", persons);
+            sort_and_save("../csv/data.csv", "../csv/sorted_by_salary_lastname_height.csv", compare_person_salary_lastname_height);
         }
         else {
             break;

@@ -32,7 +32,6 @@ add_executable(lab2
         csv_actions.hpp
         sort_timer.hpp
         tests.hpp
-        tests.cpp
         graphics.cpp
         graphics.hpp
 )

@@ -7,8 +7,9 @@
 #include <cassert>
 #include <string>
 #include "person.hpp"
+#include "iostream"
 
-inline void run_tests_for_int(ISorter<int>& sorter) {
+void run_tests_for_int(ISorter<int>& sorter) {
     ArraySequence<int> empty;
     sorter.Sort(empty, compare_default<int>);
     assert(empty.get_length() == 0);
@@ -89,7 +90,7 @@ inline void run_tests_for_int(ISorter<int>& sorter) {
     assert(two_reverse_sorted.get(1) == 4);
 }
 
-inline void run_tests_for_person(ISorter<person>& sorter) {
+void run_tests_for_person(ISorter<person>& sorter) {
     ArraySequence<person> empty;
     sorter.Sort(empty, compare_person_salary);
     assert(empty.get_length() == 0);
@@ -107,6 +108,32 @@ inline void run_tests_for_person(ISorter<person>& sorter) {
 
 }
 
-void run_all_tests();
+void run_all_tests() {
+    BubbleSorter<int> bubble_sorter_int;
+    run_tests_for_int(bubble_sorter_int);
+
+    HeapSorter<int> heap_sorter_int;
+    run_tests_for_int(heap_sorter_int);
+
+    InsertionSorter<int> insertion_sorter_int;
+    run_tests_for_int(insertion_sorter_int);
+
+    QuickSorter<int> quick_sorter_int;
+    run_tests_for_int(quick_sorter_int);
+
+    BubbleSorter<person> bubble_sorter_person;
+    run_tests_for_person(bubble_sorter_person);
+
+    HeapSorter<person> heap_sorter_person;
+    run_tests_for_person(heap_sorter_person);
+
+    InsertionSorter<person> insertion_sorter_person;
+    run_tests_for_person(insertion_sorter_person);
+
+    QuickSorter<person> quick_sorter_person;
+    run_tests_for_person(quick_sorter_person);
+
+    std::cout << "All tests are passed" << std::endl;
+}
 
 #endif // TESTS_HPP

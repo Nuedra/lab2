@@ -4,7 +4,6 @@
 #include <fstream>
 #include <chrono>
 #include <string>
-#include <iostream>
 #include "BubbleSorter.hpp"
 #include "QuickSorter.hpp"
 #include "HeapSorter.hpp"
@@ -29,9 +28,7 @@ long long measure_sort_time(ISorter<person>& sorter,
     ArraySequence<person> sequence_copy(sequence);
 
     auto start_time = std::chrono::high_resolution_clock::now();
-
     sorter.Sort(sequence_copy, cmp);
-
     auto end_time = std::chrono::high_resolution_clock::now();
 
     sorted_sequence = sequence_copy;

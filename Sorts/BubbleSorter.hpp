@@ -1,9 +1,9 @@
 #ifndef BUBBLESORTER_HPP
 #define BUBBLESORTER_HPP
 
-#include "ISorter.hpp"
-#include "data_structures/ArraySequence.h"
-#include "compare.hpp"
+#include "../Isorter.hpp"
+#include "../data_structures/ArraySequence.h"
+#include "../compare.hpp"
 
 template<typename T>
 class BubbleSorter : public ISorter<T> {

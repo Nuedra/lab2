@@ -1,9 +1,9 @@
 #ifndef INSERTIONSORTER_HPP
 #define INSERTIONSORTER_HPP
 
-#include "ISorter.hpp"
-#include "data_structures/ArraySequence.h"
-#include "compare.hpp"
+#include "../Isorter.hpp"
+#include "../data_structures/ArraySequence.h"
+#include "../compare.hpp"
 
 template<typename T>
 class InsertionSorter : public ISorter<T> {

@@ -1,9 +1,9 @@
 #ifndef HEAPSORTER_HPP
 #define HEAPSORTER_HPP
 
-#include "ISorter.hpp"
-#include "data_structures/ArraySequence.h"
-#include "compare.hpp"
+#include "../Isorter.hpp"
+#include "../data_structures/ArraySequence.h"
+#include "../compare.hpp"
 
 //Подтянуть теорию
 

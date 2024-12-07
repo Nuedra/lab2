@@ -1,9 +1,9 @@
 #ifndef QUICKSORTER_HPP
 #define QUICKSORTER_HPP
 
-#include "ISorter.hpp"
-#include "data_structures/ArraySequence.h"
-#include "compare.hpp"
+#include "../Isorter.hpp"
+#include "../data_structures/ArraySequence.h"
+#include "../compare.hpp"
 
 template<typename T>
 class QuickSorter : public ISorter<T> {

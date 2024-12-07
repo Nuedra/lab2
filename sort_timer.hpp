@@ -4,10 +4,10 @@
 #include <fstream>
 #include <chrono>
 #include <string>
-#include "BubbleSorter.hpp"
-#include "QuickSorter.hpp"
-#include "HeapSorter.hpp"
-#include "InsertionSorter.hpp"
+#include "Sorts/BubbleSorter.hpp"
+#include "Sorts/QuickSorter.hpp"
+#include "Sorts/HeapSorter.hpp"
+#include "Sorts/InsertionSorter.hpp"
 #include "data_structures/ArraySequence.h"
 #include "person.hpp"
 #include "csv_actions.hpp"

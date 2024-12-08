@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Sorts/QuickSorter.hpp"
+#include "QuickSorter.hpp"
 #include "person.hpp"
 #include "csv_actions.hpp"
 #include "sort_timer.hpp"

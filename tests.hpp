@@ -1,7 +1,7 @@
 #ifndef TESTS_HPP
 #define TESTS_HPP
 
-#include "Sorts/BubbleSorter.hpp"
+#include "BubbleSorter.hpp"
 #include "data_structures/ArraySequence.h"
 #include "compare.hpp"
 #include <cassert>

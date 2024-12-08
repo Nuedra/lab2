@@ -21,12 +21,12 @@ include_directories(${Boost_INCLUDE_DIRS})
 add_executable(lab2
         main.cpp
         Isorter.hpp
-        Sorts/QuickSorter.hpp
+        QuickSorter.hpp
         compare.hpp
         person.hpp
-        Sorts/BubbleSorter.hpp
-        Sorts/InsertionSorter.hpp
-        Sorts/HeapSorter.hpp
+        BubbleSorter.hpp
+        InsertionSorter.hpp
+        HeapSorter.hpp
         csv_actions.cpp
         csv_actions.hpp
         sort_timer.hpp

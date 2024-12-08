@@ -1,5 +1,5 @@
 #include "csv_actions.hpp"
-#include "Sorts/QuickSorter.hpp"
+#include "QuickSorter.hpp"
 #include "compare.hpp"
 #include <fstream>
 #include <sstream>

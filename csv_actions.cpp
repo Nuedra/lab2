@@ -1,10 +1,4 @@
 #include "csv_actions.hpp"
-#include "QuickSorter.hpp"
-#include "compare.hpp"
-#include <fstream>
-#include <sstream>
-#include <random>
-#include <iostream>
 
 ArraySequence<std::string> load_names_from_file(const std::string& filename) {
     ArraySequence<std::string> names;

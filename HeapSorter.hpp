@@ -5,8 +5,6 @@
 #include "data_structures/ArraySequence.h"
 #include "compare.hpp"
 
-//Подтянуть теорию
-
 template<typename T>
 class HeapSorter : public ISorter<T> {
 public:

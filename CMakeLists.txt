@@ -33,6 +33,9 @@ add_executable(lab2
         tests.hpp
         graphics.cpp
         graphics.hpp
+        sort_timer.cpp
+        compare.cpp
+        tests.cpp
 )
 
 # Линковка с библиотеками Boost

@@ -4,6 +4,12 @@
 #include "data_structures/ArraySequence.h"
 #include "person.hpp"
 #include <string>
+#include "QuickSorter.hpp"
+#include "compare.hpp"
+#include <fstream>
+#include <sstream>
+#include <random>
+#include <iostream>
 
 ArraySequence<std::string> load_names_from_file(const std::string& filename);
 std::string generate_random_name(const ArraySequence<std::string>& names);
